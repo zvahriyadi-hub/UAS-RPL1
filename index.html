@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaBuild — Solusi Digital Terbaik</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0d0d0d;
+      --ink-soft: #4a4a4a;
+      --ink-muted: #999;
+      --bg: #f7f4ee;
+      --bg-card: #ffffff;
+      --accent: #c8522a;
+      --accent-light: #f5e8e2;
+      --accent-dark: #8c3318;
+      --border: rgba(0,0,0,0.08);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 5%;
+      background: rgba(247, 244, 238, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: var(--ink);
+      color: #fff !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 100px;
+      font-weight: 500 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--accent) !important; color: #fff !important; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 0 5%;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .hero-bg-circle.c1 {
+      width: 600px; height: 600px;
+      background: var(--accent);
+      top: -200px; right: -150px;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .hero-bg-circle.c2 {
+      width: 300px; height: 300px;
+      background: #2a5fc8;
+      bottom: 50px; left: -80px;
+      animation: drift 16s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.04); }
+    }
+
+    .hero-content { max-width: 680px; position: relative; z-index: 1; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.8rem;
+      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.7s 0.25s forwards;
+    }
+    .hero-title .line-accent { color: var(--accent); font-style: italic; }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--ink-soft);
+      font-weight: 300;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.7s 0.55s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(3px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 0.95rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--ink);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 4rem;
+      padding-top: 2.5rem; border-top: 1px solid var(--border);
+      opacity: 0; animation: fadeUp 0.7s 0.7s forwards;
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.2rem; font-weight: 700;
+      color: var(--ink);
+    }
+    .stat-label { font-size: 0.82rem; color: var(--ink-muted); margin-top: 2px; }
+
+    .hero-visual {
+      flex: 1; display: flex; align-items: center; justify-content: flex-end;
+      padding-left: 4rem;
+      opacity: 0; animation: fadeRight 0.9s 0.5s forwards;
+    }
+
+    .mockup-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      width: 320px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.08);
+    }
+    .mockup-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+    .mockup-dots { display: flex; gap: 5px; }
+    .mockup-dots span { width: 9px; height: 9px; border-radius: 50%; }
+    .mockup-dots .d1 { background: #ff5f57; }
+    .mockup-dots .d2 { background: #febc2e; }
+    .mockup-dots .d3 { background: #28c840; }
+    .mockup-badge {
+      font-size: 0.7rem; font-weight: 500;
+      background: #e8f5e9; color: #2e7d32;
+      padding: 3px 10px; border-radius: 100px;
+    }
+
+    .chart-bars {
+      display: flex; align-items: flex-end; gap: 6px;
+      height: 100px; margin-bottom: 1.2rem;
+    }
+    .bar {
+      flex: 1; border-radius: 4px 4px 0 0;
+      background: var(--border);
+      transition: height 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .bar.active { background: var(--accent); }
+    .bar.semi { background: var(--accent-light); }
+
+    .mockup-metric {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .metric-label { font-size: 0.8rem; color: var(--ink-muted); }
+    .metric-val { font-size: 0.88rem; font-weight: 500; }
+    .metric-up { color: #2e7d32; font-size: 0.75rem; }
+
+    .floating-pill {
+      position: absolute;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.5rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+    .pill-1 { top: 30%; right: 8%; animation: floatPill 6s ease-in-out infinite; }
+    .pill-2 { bottom: 28%; right: 3%; animation: floatPill 8s ease-in-out infinite 1s; }
+    .pill-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+    @keyframes floatPill {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeRight {
+      from { opacity: 0; transform: translateX(32px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* LOGO STRIP */
+    .logo-strip {
+      padding: 2.5rem 5%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .logo-strip p {
+      text-align: center;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+    }
+    .logo-track {
+      display: flex; gap: 4rem; align-items: center;
+      animation: scrollLogos 20s linear infinite;
+      width: max-content;
+    }
+    .logo-wrap { display: flex; gap: 4rem; align-items: center; }
+    .logo-item {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #bbb;
+      white-space: nowrap;
+      user-select: none;
+    }
+    @keyframes scrollLogos {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* SERVICES */
+    .section { padding: 6rem 5%; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+      max-width: 500px;
+      line-height: 1.7;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      cursor: default;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.07);
+      border-color: var(--accent);
+    }
+    .service-icon {
+      width: 48px; height: 48px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.3rem;
+    }
+    .service-card h3 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+    .service-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .service-link:hover { text-decoration: underline; }
+
+    /* PROCESS */
+    .process { background: var(--ink); color: #fff; padding: 6rem 5%; }
+    .process .section-label { color: var(--accent); }
+    .process .section-title { color: #fff; }
+    .process .section-sub { color: rgba(255,255,255,0.5); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 3.5rem;
+      position: relative;
+    }
+
+    .step { position: relative; }
+    .step-num {
+      font-family: var(--serif);
+      font-size: 4rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.07);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      user-select: none;
+    }
+    .step h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .step p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+    }
+
+    /* TESTIMONIAL */
+    .testimonial-section { padding: 6rem 5%; background: var(--accent-light); }
+    .testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+    .testi-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(200,82,42,0.12);
+    }
+    .testi-quote {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+    }
+    .testi-quote::before { content: '"'; color: var(--accent); font-size: 2rem; line-height: 0; vertical-align: -0.4em; margin-right: 4px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem;
+      color: #fff; background: var(--accent);
+      flex-shrink: 0;
+    }
+    .testi-name { font-weight: 500; font-size: 0.9rem; }
+    .testi-role { font-size: 0.78rem; color: var(--ink-muted); }
+    .testi-stars { color: #f59e0b; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 0.8rem; }
+
+    /* CTA */
+    .cta-section {
+      padding: 6rem 5%;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(200,82,42,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-title { font-size: clamp(2.5rem, 5vw, 4rem); }
+    .cta-section .section-sub { margin: 0 auto 2.5rem; max-width: 480px; text-align: center; }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem 5%;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer .nav-logo { color: #fff; }
+    footer p { font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .hero { flex-direction: column; text-align: left; padding-top: 100px; padding-bottom: 4rem; }
+      .hero-visual { display: none; }
+      .nav-links { display: none; position: fixed; top: 0; left: 0; right: 0; height: 100vh; background: var(--bg); flex-direction: column; justify-content: center; align-items: center; gap: 2rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">Nova<span>Build</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Layanan</a></li>
+      <li><a href="#process">Proses</a></li>
+      <li><a href="#testimonials">Klien</a></li>
+      <a href="daftar.html" class="nav-cta">Mulai Sekarang</a>
+    </ul>
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-circle c1"></div>
+    <div class="hero-bg-circle c2"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">Agensi Digital No.1 Indonesia</div>
+      <h1 class="hero-title">
+        Kami Bangun<br><span class="line-accent">Kehadiran Digital</span><br>Yang Berkesan
+      </h1>
+      <p class="hero-desc">
+        Dari desain website hingga strategi pemasaran digital — kami menghadirkan solusi yang tidak hanya cantik, tetapi juga menghasilkan.
+      </p>
+      <div class="hero-actions">
+        <a href="https://www.instagram.com/zakivhrydi/" target="_blank" class="btn-primary">
+  Konsultasi Gratis
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a href="#services" class="btn-ghost">Lihat Layanan ↓</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num" data-count="150">0</div>
+          <div class="stat-label">Proyek Selesai</div>
+        </div>
+        <div>
+          <div class="stat-num" data-count="98">0</div>
+          <div class="stat-label">% Klien Puas</div>
+        </div>
+        <div>
+          <div class="stat-num" data-count="6">0</div>
+          <div class="stat-label">Tahun Pengalaman</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div style="position: relative;">
+        <div class="mockup-card">
+          <div class="mockup-header">
+            <div class="mockup-dots">
+              <span class="d1"></span><span class="d2"></span><span class="d3"></span>
+            </div>
+            <span class="mockup-badge">● Live</span>
+          </div>
+          <div class="chart-bars" id="chartBars">
+            <div class="bar semi" style="height:40%"></div>
+            <div class="bar active" style="height:65%"></div>
+            <div class="bar semi" style="height:50%"></div>
+            <div class="bar active" style="height:85%"></div>
+            <div class="bar semi" style="height:55%"></div>
+            <div class="bar active" style="height:72%"></div>
+            <div class="bar semi" style="height:45%"></div>
+          </div>
+          <div class="mockup-metric">
+            <span class="metric-label">Konversi</span>
+            <span class="metric-val">3.42% <span class="metric-up">↑ 14%</span></span>
+          </div>
+          <div class="mockup-metric">
+            <span class="metric-label">Pengunjung</span>
+            <span class="metric-val">12.8K <span class="metric-up">↑ 28%</span></span>
+          </div>
+          <div class="mockup-metric">
+            <span class="metric-label">Revenue</span>
+            <span class="metric-val">Rp 48.5 Jt <span class="metric-up">↑ 33%</span></span>
+          </div>
+        </div>
+        <div class="floating-pill pill-1">
+          <span class="pill-dot" style="background:#28c840"></span>Website Live 🚀
+        </div>
+        <div class="floating-pill pill-2">
+          <span class="pill-dot" style="background:#febc2e"></span>SEO Rank #1
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO STRIP -->
+  <div class="logo-strip">
+    <p>Dipercaya oleh perusahaan terkemuka</p>
+    <div style="overflow: hidden;">
+      <div class="logo-track">
+        <div class="logo-wrap">
+          <span class="logo-item">Tokopedia</span>
+          <span class="logo-item">Gojek</span>
+          <span class="logo-item">BCA Digital</span>
+          <span class="logo-item">Pertamina</span>
+          <span class="logo-item">Traveloka</span>
+          <span class="logo-item">Telkom</span>
+          <span class="logo-item">Mandiri</span>
+        </div>
+        <div class="logo-wrap" aria-hidden="true">
+          <span class="logo-item">Tokopedia</span>
+          <span class="logo-item">Gojek</span>
+          <span class="logo-item">BCA Digital</span>
+          <span class="logo-item">Pertamina</span>
+          <span class="logo-item">Traveloka</span>
+          <span class="logo-item">Telkom</span>
+          <span class="logo-item">Mandiri</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <span class="section-label">Apa yang kami tawarkan</span>
+    <h2 class="section-title">Layanan Kami</h2>
+    <p class="section-sub">Solusi digital lengkap untuk mengembangkan bisnis Anda di era modern ini.</p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>Desain Website</h3>
+        <p>UI/UX modern dan responsif yang memukau pengunjung sejak detik pertama — dirancang khusus sesuai brand Anda.</p>
+        <a href="#contact" class="service-link">Selengkapnya →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>Pengembangan Web</h3>
+        <p>Website cepat, aman, dan skalabel dengan teknologi terkini. Dari landing page hingga platform e-commerce lengkap.</p>
+        <a href="#contact" class="service-link">Selengkapnya →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📈</div>
+        <h3>SEO & Digital Marketing</h3>
+        <p>Strategi SEO berbasis data yang menempatkan bisnis Anda di posisi teratas Google dan mendatangkan traffic organik.</p>
+        <a href="#contact" class="service-link">Selengkapnya →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📱</div>
+        <h3>Aplikasi Mobile</h3>
+        <p>Aplikasi iOS dan Android yang intuitif dan engaging — dari konsep hingga rilis di App Store dan Play Store.</p>
+        <a href="#contact" class="service-link">Selengkapnya →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <h3>Integrasi AI</h3>
+        <p>Integrasikan kecerdasan buatan ke dalam bisnis Anda — chatbot, otomasi, dan analitik cerdas berbasis AI.</p>
+        <a href="#contact" class="service-link">Selengkapnya →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">☁️</div>
+        <h3>Cloud & Infrastruktur</h3>
+        <p>Setup hosting cloud yang cepat, aman, dan hemat biaya. Uptime 99.9% dengan monitoring 24/7.</p>
+        <a href="#contact" class="service-link">Selengkapnya →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <span class="section-label">Bagaimana kami bekerja</span>
+    <h2 class="section-title" style="color:#fff;">Proses Kami</h2>
+    <p class="section-sub">Empat langkah sederhana untuk mengubah ide Anda menjadi kenyataan digital yang berdampak.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Diskusi & Riset</h3>
+        <p>Kami memahami bisnis, target market, dan tujuan Anda secara mendalam sebelum menulis satu baris kode pun.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Desain & Prototipe</h3>
+        <p>Tim desainer kami membuat wireframe dan prototipe interaktif untuk memastikan visi Anda terwujud sempurna.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Pengembangan</h3>
+        <p>Kode bersih, terstruktur, dan diuji secara menyeluruh. Anda mendapat update progres setiap minggu.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Launch & Support</h3>
+        <p>Peluncuran yang mulus dan dukungan teknis berkelanjutan agar bisnis digital Anda terus berkembang.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+     <section class="testimonial-section" id="testimonials">
+    <span class="section-label">Kata Klien Kami</span>
+    <h2 class="section-title">Mereka Sudah Merasakan Hasilnya</h2>
+    <div class="testimonials">
+         <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">SEO kami melonjak drastis. Sekarang muncul di halaman pertama Google untuk 20+ kata kunci target dalam waktu 3 bulan.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">BH</div>
+          <div>
+            <div class="testi-name">Zaki Vahriyadi</div>
+            <div class="testi-role">CEO PT Laguna</div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">NovaBuild mengubah website toko kami yang biasa menjadi mesin penjualan yang luar biasa. Revenue online naik 3x lipat dalam 4 bulan!</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AR</div>
+          <div>
+            <div class="testi-name">Cristiano Romindo Manalu</div>
+            <div class="testi-role">Admin J-M-K Startup</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">Tim yang sangat profesional dan responsif. Proyek selesai lebih cepat dari jadwal dengan kualitas yang melampaui ekspektasi kami.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SW</div>
+          <div>
+            <div class="testi-name">Ekel Agita Tarigan</div>
+            <div class="testi-role">CEO Barber</div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="cta-bg"></div>
+    <span class="section-label">Siap Memulai?</span>
+    <h2 class="section-title">Wujudkan Ide Digital<br>Anda Bersama Kami</h2>
+    <p class="section-sub">Konsultasi pertama gratis. Ceritakan kebutuhan Anda dan kami akan siapkan solusi terbaiknya.</p>
+    <a href="https://instagram.com/zakivhrydi" target="_blank" class="btn-primary" style="font-size: 1rem; padding: 1rem 2.5rem; display: inline-flex;">
+  Mulai Konsultasi Gratis
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 8px;">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="nav-logo">Nova<span>Build</span></a>
+    <p>© 2025 NovaBuild. Semua hak dilindungi.</p>
+    <div class="footer-links">
+      <a href="#">Privasi</a>
+      <a href="#">Syarat</a>
+      <a href="#">Karir</a>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    // Counter animation
+    function animateCounter(el) {
+      const target = +el.dataset.count;
+      let start = 0;
+      const duration = 1800;
+      const step = timestamp => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target) + (el.dataset.count === '98' ? '%' : '+');
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    const statNums = document.querySelectorAll('.stat-num');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCounter(e.target);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    statNums.forEach(el => observer.observe(el));
+
+    // Scroll reveal cards
+    const revealEls = document.querySelectorAll('.service-card, .step, .testi-card');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.animation = `fadeUp 0.5s ${i * 0.07}s both`;
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => {
+      el.style.opacity = '0';
+      revealObs.observe(el);
+    });
+  </script>
+</body>
+</html>
